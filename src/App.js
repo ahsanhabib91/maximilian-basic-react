@@ -32,7 +32,12 @@ class App extends Component {
 
   nameChangedHandler = (event, id) => {
     console.log(event.target.value, id);
-    // this.setState({ customText: event.target.value });
+    const personIndex = this.state.persons.findIndex(p => p.id === id);
+    const person = { ...this.state.persons[personIndex] };
+    person.name = event.target.value;
+    const persons = [...this.state.persons];
+    persons[personIndex] = person;
+    this.setState({ persons });
   };
 
   render() {
@@ -47,7 +52,7 @@ class App extends Component {
     if (this.state.showPersons) {
       persons = this.state.persons.map((person, index) => (
         <Person
-          changed={this.nameChangedHandler}
+          changed={event => this.nameChangedHandler(event, person.id)}
           click={() => this.deletePersonHandler(index)}
           key={person.id}
           name={person.name}
@@ -68,7 +73,7 @@ class App extends Component {
 
         <Person
           customText={this.state.customText}
-          //   changed={this.nameChangedHandler}
+          changed={this.nameChangedHandler}
           click={() => this.switchHandler("wwwww")}
           name="eee"
           age="55"
